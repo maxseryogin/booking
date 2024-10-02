@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Free Parking</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+      }
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid black;
+        padding: 10px;
+      }
+      .header h1,
+      .header h2 {
+        margin: 0;
+      }
+      .header h2 {
+        margin-left: 20px;
+      }
+      .status {
+        display: flex;
+        flex-direction: column;
+        margin: 20px;
+        text-align: left; /* Изменено на left */
+      }
+      .status div {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start; /* Изменено на flex-start */
+        margin-bottom: 10px;
+      }
+      .status .free,
+      .status .occupied {
+        width: 120px;
+        background-color: green;
+        color: white;
+        padding: 10px;
+        border-radius: 5px;
+        text-align: center;
+      }
+      .status .occupied {
+        background-color: red;
+      }
+      .parking-lot {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 10px;
+        margin: 20px;
+        text-align: center;
+      }
+      .parking-lot div {
+        background-color: lightgray;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 50px;
+        border: 1px solid black;
+        font-size: 20px;
+      }
+      .parking-lot div.taken {
+        background-color: gray;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <a href="{% url 'home' %}"><h1>Free Parking</h1></a>
+      <a href="{% url 'my_bookings' %}"><h2>Мои бронирования</h2></a>
+    </div>
+    <div class="status">
+      <div><div class="free">Свободно</div></div>
+      <div><div class="occupied">Занято</div></div>
+    </div>
+    <div class="parking-lot">
+      {% for spot in parking_spots %}
+      <a href="{% url 'book_spot' spot.id %}">
+        <div class="{% if not spot.is_free %}taken{% endif %}">
+          {{ spot.number }}
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </body>
+</html>
