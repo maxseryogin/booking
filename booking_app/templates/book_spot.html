@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Бронирование парковочного места</title>
+  </head>
+  <body>
+    <h2>Бронирование парковочного места №{{ spot.number }}</h2>
+    <form method="post">
+      {% csrf_token %}
+      <label for="start_date">Дата начала:</label>
+      <input type="datetime-local" id="start_date" name="start_date" required />
+      <label for="end_date">Дата окончания:</label>
+      <input type="datetime-local" id="end_date" name="end_date" required />
+      <button type="submit">Забронировать</button>
+    </form>
+  </body>
+</html>
