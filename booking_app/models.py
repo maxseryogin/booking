@@ -5,9 +5,12 @@ class Location(models.Model):
     name = models.CharField(max_length=100)
 
 class ParkingSpot(models.Model):
-    number = models.IntegerField()
+    number = models.CharField(max_length=10)
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
     is_free = models.BooleanField(default=True)  # Добавляем атрибут is_free
+
+    def __str__(self):
+        return self.number
 
 class Booking(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
