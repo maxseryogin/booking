@@ -26,13 +26,14 @@
         display: flex;
         flex-direction: column;
         margin: 20px;
-        text-align: left; /* Изменено на left */
+        text-align: left;
       }
       .status div {
         display: flex;
         align-items: center;
-        justify-content: flex-start; /* Изменено на flex-start */
+        justify-content: flex-start;
         margin-bottom: 10px;
+        cursor: pointer;
       }
       .status .free,
       .status .occupied {
@@ -54,18 +55,33 @@
         text-align: center;
       }
       .parking-lot div {
-        background-color: lightgray;
+        background-color: gray;
         display: flex;
         justify-content: center;
         align-items: center;
         height: 50px;
         border: 1px solid black;
         font-size: 20px;
-      }
-      .parking-lot div.taken {
-        background-color: gray;
+        transition: background-color 1.5s ease;
       }
     </style>
+    <script>
+      function filterSpots(status) {
+        const spots = document.querySelectorAll(".parking-lot div");
+        spots.forEach((spot) => {
+          if (status === "free" && spot.classList.contains("free")) {
+            spot.style.backgroundColor = "green";
+          } else if (
+            status === "occupied" &&
+            spot.classList.contains("taken")
+          ) {
+            spot.style.backgroundColor = "red";
+          } else {
+            spot.style.backgroundColor = "gray";
+          }
+        });
+      }
+    </script>
   </head>
   <body>
     <div class="header">
@@ -73,13 +89,16 @@
       <a href="{% url 'my_bookings' %}"><h2>Мои бронирования</h2></a>
     </div>
     <div class="status">
-      <div><div class="free">Свободно</div></div>
-      <div><div class="occupied">Занято</div></div>
+      <div onclick="filterSpots('free')"><div class="free">Свободно</div></div>
+      <div onclick="filterSpots('occupied')">
+        <div class="occupied">Занято</div>
+      </div>
+      <div onclick="filterSpots('all')"><div class="all">Все</div></div>
     </div>
     <div class="parking-lot">
       {% for spot in parking_spots %}
-      <a href="{% url 'book_spot' spot.id %}">
-        <div class="{% if not spot.is_free %}taken{% endif %}">
+      <a href="{% url 'book_spot' %}">
+        <div class="{% if not spot.is_free %}taken{% else %}free{% endif %}">
           {{ spot.number }}
         </div>
       </a>
