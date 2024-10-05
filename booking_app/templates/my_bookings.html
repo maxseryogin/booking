@@ -2,10 +2,79 @@
 <html>
   <head>
     <title>Мои бронирования</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+      }
+      .header {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-bottom: 1px solid black;
+        padding: 10px;
+      }
+      .header a {
+        text-decoration: none;
+        color: black;
+        padding: 10px;
+        transition: background-color 0.3s, color 0.3s;
+      }
+      .header a:hover {
+        background-color: gray;
+        color: white;
+      }
+      .header a.active {
+        text-decoration: underline;
+      }
+      .header h1,
+      .header h2 {
+        margin: 0;
+        font-size: 24px; /* Установим одинаковый размер шрифта */
+      }
+      .header h2 {
+        margin-left: 20px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+      th,
+      td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: left;
+      }
+      th {
+        background-color: #f2f2f2;
+      }
+      button {
+        margin-right: 5px;
+        padding: 5px 10px;
+        border: none;
+        background-color: #007bff;
+        color: white;
+        border-radius: 3px;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #0056b3;
+      }
+    </style>
   </head>
   <body>
-    <h1>Мои бронирования</h1>
-    <a href="{% url 'home' %}">На главную</a>
+    <div class="header">
+      <a
+        href="{% url 'home' %}"
+        class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}"
+        ><h1>Парковка</h1></a
+      >
+      <a
+        href="{% url 'my_bookings' %}"
+        class="{% if request.resolver_match.url_name == 'my_bookings' %}active{% endif %}"
+        ><h2>Мои бронирования</h2></a
+      >
+    </div>
     <table>
       <thead>
         <tr>

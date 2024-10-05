@@ -2,6 +2,31 @@
 <html>
   <head>
     <title>Бронирование парковочного места</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+      }
+      form {
+        display: flex;
+        flex-direction: column;
+        max-width: 400px;
+        margin: 0 auto;
+      }
+      label, select, input, button {
+        margin-bottom: 10px;
+      }
+      button {
+        padding: 10px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #0056b3;
+      }
+    </style>
   </head>
   <body>
     <h2>Бронирование парковочного места</h2>
@@ -10,7 +35,9 @@
       <label for="spot">Парковочное место:</label>
       <select id="spot" name="spot" required>
         {% for spot in spots %}
-        <option value="{{ spot.id }}">{{ spot.number }}</option>
+        <option value="{{ spot.id }}" {% if spot.id|stringformat:"s" == selected_spot_id %}selected{% endif %}>
+          {{ spot.number }}
+        </option>
         {% endfor %}
       </select>
       <label for="start_date">Дата начала:</label>

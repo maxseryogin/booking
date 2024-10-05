@@ -39,6 +39,7 @@ def my_bookings(request):
 
 @login_required(login_url='/login/')
 def book_spot(request):
+    selected_spot_id = request.GET.get('spot_id')  # Получаем идентификатор выбранного места
     if request.method == 'POST':
         spot_id = request.POST['spot']
         spot = get_object_or_404(ParkingSpot, id=spot_id)
@@ -57,4 +58,4 @@ def book_spot(request):
         return redirect('my_bookings')
     else:
         spots = ParkingSpot.objects.filter(is_free=True)
-        return render(request, 'book_spot.html', {'spots': spots})
+        return render(request, 'book_spot.html', {'spots': spots, 'selected_spot_id': selected_spot_id})
