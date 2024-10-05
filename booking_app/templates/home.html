@@ -3,21 +3,35 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Free Parking</title>
+    <title>Парковка</title>
     <style>
       body {
         font-family: Arial, sans-serif;
       }
       .header {
         display: flex;
-        justify-content: space-between;
+        justify-content: center;
         align-items: center;
         border-bottom: 1px solid black;
         padding: 10px;
       }
+      .header a {
+        text-decoration: none;
+        color: black;
+        padding: 10px;
+        transition: background-color 0.3s, color 0.3s;
+      }
+      .header a:hover {
+        background-color: gray;
+        color: white;
+      }
+      .header a.active {
+        text-decoration: underline;
+      }
       .header h1,
       .header h2 {
         margin: 0;
+        font-size: 24px; /* Установим одинаковый размер шрифта */
       }
       .header h2 {
         margin-left: 20px;
@@ -50,9 +64,14 @@
       .parking-lot {
         display: grid;
         grid-template-columns: repeat(6, 1fr);
-        gap: 10px;
+        gap: 0;
         margin: 20px;
         text-align: center;
+        border-collapse: collapse;
+      }
+      .parking-lot a {
+        text-decoration: none;
+        color: rgb(255, 255, 255);
       }
       .parking-lot div {
         background-color: gray;
@@ -60,7 +79,7 @@
         justify-content: center;
         align-items: center;
         height: 50px;
-        border: 1px solid black;
+        border: 1px solid white;
         font-size: 20px;
         transition: background-color 1.5s ease;
       }
@@ -85,19 +104,26 @@
   </head>
   <body>
     <div class="header">
-      <a href="{% url 'home' %}"><h1>Free Parking</h1></a>
-      <a href="{% url 'my_bookings' %}"><h2>Мои бронирования</h2></a>
+      <a
+        href="{% url 'home' %}"
+        class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}"
+        ><h1>Парковка</h1></a
+      >
+      <a
+        href="{% url 'my_bookings' %}"
+        class="{% if request.resolver_match.url_name == 'my_bookings' %}active{% endif %}"
+        ><h2>Мои бронирования</h2></a
+      >
     </div>
     <div class="status">
       <div onclick="filterSpots('free')"><div class="free">Свободно</div></div>
       <div onclick="filterSpots('occupied')">
         <div class="occupied">Занято</div>
       </div>
-      <div onclick="filterSpots('all')"><div class="all">Все</div></div>
     </div>
     <div class="parking-lot">
       {% for spot in parking_spots %}
-      <a href="{% url 'book_spot' %}">
+      <a href="{% url 'book_spot' %}?spot_id={{ spot.id }}">
         <div class="{% if not spot.is_free %}taken{% else %}free{% endif %}">
           {{ spot.number }}
         </div>
