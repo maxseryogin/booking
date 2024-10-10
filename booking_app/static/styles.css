@@ -1,0 +1,136 @@
+body {
+  font-family: Arial, sans-serif;
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid black;
+  padding: 10px;
+}
+
+.header a {
+  text-decoration: none;
+  color: black;
+  padding: 10px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.header a:hover {
+  background-color: gray;
+  color: white;
+}
+
+.header a.active {
+  text-decoration: underline;
+}
+
+.header h1,
+.header h2 {
+  margin: 0;
+  font-size: 24px; /* Установим одинаковый размер шрифта */
+}
+
+.header h2 {
+  margin-left: 20px;
+}
+
+.status {
+  display: flex;
+  flex-direction: column;
+  margin: 20px;
+  text-align: left;
+}
+
+.status div {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.status .free,
+.status .occupied {
+  width: 120px;
+  background-color: green;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.status .occupied {
+  background-color: red;
+}
+
+.parking-lot {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0;
+  margin: 20px;
+  text-align: center;
+  border-collapse: collapse;
+}
+
+.parking-lot a {
+  text-decoration: none;
+  color: rgb(255, 255, 255);
+}
+
+.parking-lot div {
+  background-color: gray;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  border: 1px solid white;
+  font-size: 20px;
+  transition: background-color 1.5s ease;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+label,
+select,
+input,
+button {
+  margin-bottom: 10px;
+}
+
+button {
+  margin-right: 5px;
+  padding: 5px 10px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+}
+
+th,
+td {
+  border: 1px solid black;
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  background-color: #f2f2f2;
+}
