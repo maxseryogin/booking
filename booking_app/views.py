@@ -5,34 +5,25 @@ from django.utils import timezone
 from django.http import HttpResponse
 import logging
 from pytz import timezone as pytz_timezone
+from .forms import SuperUserRegistrationForm
+from .coords import areas
 
 logger = logging.getLogger(__name__)
 
 # Главная страница
-def home(request):
-    status = request.GET.get('status')
-    if status == 'free':
-        parking_spots = ParkingSpot.objects.filter(is_free=True)
-    elif status == 'occupied':
-        parking_spots = ParkingSpot.objects.filter(is_free=False)
-    else:
-        parking_spots = ParkingSpot.objects.all()
-    return render(request, 'home.html', {'parking_spots': parking_spots})
+def home(request):    
+    return render(request, 'home.html', {'areas': areas})
 
 @login_required(login_url='/login/')
 def my_bookings(request):
     user = request.user
     bookings = Booking.objects.filter(user=user)
+    booking_history = BookingHistory.objects.filter(booking__user=user)
 
     if request.method == 'POST':
         booking_id = request.POST.get('booking_id')
         action = request.POST.get('action')
         booking = get_object_or_404(Booking, id=booking_id, user=user)
-        booking_history = BookingHistory.objects.filter(booking__user=request.user)
-        context = {
-                'bookings': bookings,
-                'booking_history': booking_history,
-            }
         if action == 'cancel':
             booking.parking_spot.is_free = True
             booking.parking_spot.save()
@@ -57,11 +48,14 @@ def my_bookings(request):
             )
             return redirect('my_bookings')
 
-    return render(request, 'my_bookings.html', {'bookings': bookings})
+    return render(request, 'my_bookings.html', {
+        'bookings': bookings,
+        'booking_history': booking_history,
+    })
 
 @login_required(login_url='/login/')
 def book_spot(request):
-    selected_spot_id = request.GET.get('spot_id')  # Получаем идентификатор выбранного места
+    selected_spot_id = request.GET.get('spot_id')
     if request.method == 'POST':
         spot_id = request.POST['spot']
         spot = get_object_or_404(ParkingSpot, id=spot_id)
@@ -87,3 +81,13 @@ def book_spot(request):
     else:
         spots = ParkingSpot.objects.filter(is_free=True)
         return render(request, 'book_spot.html', {'spots': spots, 'selected_spot_id': selected_spot_id})
+
+def register(request):
+    if request.method == 'POST':
+        form = SuperUserRegistrationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('login') 
+    else:
+        form = SuperUserRegistrationForm()
+    return render(request, 'register.html', {'form': form})

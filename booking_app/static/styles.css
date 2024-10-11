@@ -62,7 +62,13 @@ body {
 }
 
 .status .occupied {
-  background-color: red;
+  background-image: url("{% static 'car.png' %}");
+  background-size: 50px 50px; /* Установите размер изображения */
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 50px; /* Установите ширину */
+  height: 50px; /* Установите высоту */
+  display: inline-block; /* Убедитесь, что элемент отображается */
 }
 
 .parking-lot {

@@ -2,11 +2,10 @@
 <html lang="ru">
   <head>
     {% load static %}
+    <link rel="stylesheet" href="{% static 'styles.css' %}" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Парковка</title>
-    <link rel="stylesheet" href="{% static 'styles.css' %}" />
-    <script src="{% static 'js/filterSpots.js' %}"></script>
   </head>
   <body>
     <div class="header">
@@ -21,20 +20,24 @@
         ><h2>Мои бронирования</h2></a
       >
     </div>
-    <div class="status">
-      <div onclick="filterSpots('free')"><div class="free">Свободно</div></div>
-      <div onclick="filterSpots('occupied')">
-        <div class="occupied">Занято</div>
-      </div>
-    </div>
     <div class="parking-lot">
-      {% for spot in parking_spots %}
-      <a href="{% url 'book_spot' %}?spot_id={{ spot.id }}">
-        <div class="{% if not spot.is_free %}taken{% else %}free{% endif %}">
-          {{ spot.number }}
-        </div>
-      </a>
-      {% endfor %}
+      <img
+        src="{% static 'Parking.png' %}"
+        alt="Парковка"
+        usemap="#parking-map"
+        class="parking-image"
+      />
+      <map name="parking-map">
+        {% for area in areas %}
+        <area
+          shape="rect"
+          coords="{{ area.coords }}"
+          href="{% url 'book_spot' %}?spot_id={{ area.spot_id }}"
+          alt="{{ area.alt }}"
+          class="free"
+        />
+        {% endfor %}
+      </map>
     </div>
   </body>
 </html>
