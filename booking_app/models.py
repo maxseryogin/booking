@@ -18,3 +18,14 @@ class Booking(models.Model):
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
     confirmed = models.BooleanField(default=True)
+
+class BookingHistory(models.Model):
+    booking = models.ForeignKey(Booking, on_delete=models.SET_NULL, null=True)
+    action = models.CharField(max_length=50)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    start_date = models.DateTimeField(null=True, blank=True)
+    end_date = models.DateTimeField(null=True, blank=True)
+    parking_spot_number = models.CharField(max_length=10, null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.booking} - {self.action} at {self.timestamp}"

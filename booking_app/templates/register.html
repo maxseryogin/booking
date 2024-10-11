@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Вход</title>
+    <title>Регистрация</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'styles.css' %}" />
   </head>
   <body>
     <div class="login-container">
-      <h2>Войти в систему</h2>
+      <h2>Регистрация</h2>
       <form method="post">
         {% csrf_token %} {{ form.as_p }}
         <div class="form-buttons">
-          <button type="submit">Войти</button>
-          <a href="/register" class="button-link">Регистрация</a>
+          <button type="submit">Зарегистрироваться</button>
+          <a href="/login" class="button-link">Вход</a>
         </div>
       </form>
     </div>
