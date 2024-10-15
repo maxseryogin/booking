@@ -11,8 +11,11 @@ from .coords import areas
 logger = logging.getLogger(__name__)
 
 # Главная страница
-def home(request):    
-    return render(request, 'home.html', {'areas': areas})
+def home(request):
+    # Получаем все бронированные места
+    booking_places = Booking.objects.filter(confirmed=True).values_list('parking_spot__id', flat=True)
+    return render(request, 'home.html', {'areas': areas, 'booking_places': booking_places})
+
 
 @login_required(login_url='/login/')
 def my_bookings(request):
