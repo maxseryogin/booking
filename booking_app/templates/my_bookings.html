@@ -1,9 +1,46 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
   <head>
-    <title>Мои бронирования</title>
     {% load static %}
+    <title>Мои бронирования</title>
     <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}" />
+    <link rel="icon" href="{% static 'icon.jpg' %}" type="image/x-icon" />
+    <style>
+      body {
+        margin: 0;
+        background-image: url("{% static 'fon.png' %}");
+        background-size: cover; /* Масштабировать изображение на весь экран */
+        background-position: center; /* Центрировать изображение */
+      }
+      .header {
+        background-color: rgba(
+          168,
+          168,
+          168,
+          0.8
+        ); /* Прозрачный фон для заголовка */
+        padding: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: relative; /* Добавляем позиционирование для header */
+        z-index: 10; /* Убедитесь, что заголовок выше фона */
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse; /* Убираем двойные границы между ячейками */
+        background-color: white; /* Белый фон для всей таблицы */
+      }
+      th,
+      td {
+        padding: 10px; /* Отступы внутри ячеек */
+        border: 1px solid #ccc; /* Граница ячеек */
+        text-align: left; /* Выравнивание текста в ячейках */
+      }
+      th {
+        background-color: #f2f2f2; /* Светло-серый фон для заголовков */
+      }
+    </style>
   </head>
   <body>
     <div class="header">
@@ -17,7 +54,9 @@
         class="{% if request.resolver_match.url_name == 'my_bookings' %}active{% endif %}"
         ><h2>Мои бронирования</h2></a
       >
+      <a href="{% url 'login' %}"><h2>Войти</h2></a>
     </div>
+
     <table>
       <thead>
         <tr>
@@ -40,6 +79,13 @@
               <button type="submit" name="action" value="cancel">
                 Отменить
               </button>
+              <input
+                type="number"
+                name="extend_hours"
+                min="1"
+                placeholder="Часы"
+                style="width: 60px"
+              />
               <button type="submit" name="action" value="extend">
                 Продлить
               </button>

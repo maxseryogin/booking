@@ -3,9 +3,32 @@
   <head>
     {% load static %}
     <link rel="stylesheet" href="{% static 'styles.css' %}" />
+    <link rel="icon" href="{% static 'icon.jpg' %}" type="image/x-icon" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Парковка</title>
+    <style>
+      body {
+        margin: 0;
+        background-image: url("{% static 'fon.png' %}");
+        background-size: cover; /* Масштабировать изображение на весь экран */
+        background-position: center; /* Центрировать изображение */
+      }
+      .header {
+        background-color: rgba(
+          168,
+          168,
+          168,
+          0.8
+        ); /* Прозрачный фон для заголовка */
+        padding: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: relative; /* Добавляем позиционирование для header */
+        z-index: 10; /* Убедитесь, что заголовок выше фона */
+      }
+    </style>
   </head>
   <body>
     <div class="header">
@@ -19,25 +42,42 @@
         class="{% if request.resolver_match.url_name == 'my_bookings' %}active{% endif %}"
         ><h2>Мои бронирования</h2></a
       >
+      <a href="{% url 'login' %}"><h2>Войти</h2></a>
     </div>
-    <div class="parking-lot" style="display: flex; justify-content: center">
-      <img
-        src="{% static 'Parking copy.png' %}"
-        alt="Парковка"
-        usemap="#parking-map"
-        class="parking-image"
-      />
-      <map name="parking-map">
-        {% for area in areas %}
-        <area
-          shape="rect"
-          coords="{{ area.coords }}"
-          href="{% url 'book_spot' %}?spot_id={{ area.spot_id }}"
-          alt="{{ area.alt }}"
-          class="{% if area.is_occupied %}occupied{% else %}free{% endif %}"
+    <div
+      class="parking-container"
+      style="width: 100%; display: flex; justify-content: center"
+    >
+      <div
+        class="parking-lot"
+        style="position: relative; width: 1278px; height: 818px"
+      >
+        {% for area in areas %} {% if area.spot_id in booking_places %}
+        <img
+          style="position: absolute; left: {{ area.x }}; top: {{ area.y }}; width: 150px; height: 284px; transform: rotate({{ area.rotation }}deg);"
+          src="{% static area.image %}"
+          alt="Машина"
         />
-        {% endfor %}
-      </map>
+        {% endif %} {% endfor %}
+        <img
+          src="{% static 'Parking.png' %}"
+          alt="Парковка"
+          usemap="#parking-map"
+          class="parking-image"
+          style="display: block; margin: auto"
+        />
+        <map name="parking-map">
+          {% for area in areas %}
+          <area
+            shape="rect"
+            coords="{{ area.coords }}"
+            href="{% url 'book_spot' %}?spot_id={{ area.spot_id }}"
+            alt="{{ area.alt }}"
+            class="{% if area.is_occupied %}occupied{% else %}free{% endif %}"
+          />
+          {% endfor %}
+        </map>
+      </div>
     </div>
   </body>
 </html>
